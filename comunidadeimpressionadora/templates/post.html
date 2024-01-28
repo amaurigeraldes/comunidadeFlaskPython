@@ -1,0 +1,145 @@
+<!-- Criando uma extensão do arquivo "base.html" -->
+{% extends "base.html" %}
+
+
+<!-- Criando o conteúdo da página de inicio do site -->
+{% block body %}
+<div class = "container mt-3">
+    <div class="row border mt-4 p-3 meupost">
+        <!-- Separando 3 Colunas para a Imagem -->
+        <div class="col col-3">
+            <div class="image pe-2">
+                <!-- Passando o Campo foto_perfil do autor daquele post "post.autor.foto_perfil" -->
+                <img src="{{ url_for("static", filename = "fotos_perfil/{}".format(post.autor.foto_perfil)) }}" class="rounded" width="240">
+                <!-- Mostrando o Nome do Usuário -->
+                <strong>{{ post.autor.username }}</strong>
+                <!-- Mostrando os Botões do Cursos do Usuário na Página Perfil do Usuário -->
+                <div class="row justify-content-center">
+                    <div class="col" style = "text-align: center">
+                        <!-- Percorre a String "post.autor.cursos", transf. numa Lista de Cursos usando ".split(";")"  -->
+                        {% for curso in post.autor.cursos.split(";") %}
+                            <!-- Exibindo os Cursos selecionados pelo Usuário  -->
+                            <!-- Parãmetro "disabled" para esmaecimento em Components/Buttons do BootStrap -->
+                            <button type="button" class="btn btn-success mt-2 disabled"> {{ curso}} </button>
+                        {% endfor  %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Separando 9 Colunas para o Texto -->
+        <div class="col col-9">
+            <!-- Incluindo o Título do Post e a Data em que ele foi Postado -->
+            <!-- Obs.1: A "class="text-muted"" é uma class do BootStrap -->
+            <h3>
+                {{ post.titulo }}
+                <small class="text-muted" style = "font-size: 15px;"> - Data de Criação: {{ post.data_criacao.strftime("%d/%m/%Y %H:%M") }} 
+                {% if form_exibir_post %}
+                    - <a href="#form_editarpost"> Editar Post </a> / <a href="#" class="text-danger" data-bs-toggle="modal" data-bs-target="#ExcluirPost"> Excluir Post </a>
+                {% endif %}
+                </small>
+            </h3>
+            <p>{{ post.corpo }}</p>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Verificando se em "form_exibir_post" existe ou não um Formulário para Editar o Post -->
+{% if form_exibir_post %}
+
+<div class = "container">
+    <div class = "col w-100 mx-auto">
+        <form method = "POST" action = "" id = "form_editarpost" class = "border p-3 mt-2">
+            <!-- Incluindo o Token de Segurançado Formulário. Importante: logo abaixo das tags <form> -->
+            <!-- Obs.: A instância "form_criarconta" está linkada na Função "form_exibir_post()" em "routes.py" -->
+            {{ form_exibir_post.csrf_token }}
+            <legend>Editar Post</legend>
+            <fieldset>
+                <!-- Campo de titulo -->
+                <!-- Obs.1: A instância "form_exibir_post" está linkada na Função "form_exibir_post()" em "routes.py" -->
+                <!-- Obs.2: Nomeando os rótulos ".label" nos campos conforme foram criados no "form_exibir_post" -->
+                <div class = "form-group">
+                    {{ form_exibir_post.titulo.label(class="form-control-label") }}
+                        <!-- Verificando se existem errors neste campo -->
+                    {% if form_exibir_post.titulo.errors %}
+                        <!-- Se existe erro, exibir usando a classe "is-invalid" que aparecerá na class="invalid-feedback" -->
+                        {{ form_exibir_post.titulo(class="form-control is-invalid") }}
+                        <!-- Criando uma <div class = "invalid-feedback"> do BootStrap para o Erro aparecer bem visual -->
+                        <div class = "invalid-feedback">
+                            <!-- Percorrendo a lista em "form_exibir_post.titulo.errors" -->
+                            {% for erro in form_exibir_post.titulo.errors %}
+                                <!-- Mostrando a variável erro -->
+                                {{ erro }}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <!-- Exibindo o Formulário caso não haja erro -->
+                        {{ form_exibir_post.titulo(class="form-control") }}
+                    {% endif %}
+                </div>
+                <!-- Campo de corpo -->
+                <!-- Obs.1: A instância "form_exibir_post" está linkada na Função "form_exibir_post()" em "routes.py" -->
+                <!-- Obs.2: Nomeando os rótulos ".label" nos campos conforme foram criados no "form_exibir_post" -->
+                <div class = "form-group">
+                    {{ form_exibir_post.corpo.label(class="form-control-label") }}
+                        <!-- Verificando se existem errors neste campo -->
+                    {% if form_exibir_post.corpo.errors %}
+                        <!-- Se existe erro, exibir usando a classe "is-invalid" que aparecerá na class="invalid-feedback" -->
+                        {{ form_exibir_post.corpo(class="form-control is-invalid") }}
+                        <!-- Criando uma <div class = "invalid-feedback"> do BootStrap para o Erro aparecer bem visual -->
+                        <div class = "invalid-feedback">
+                            <!-- Percorrendo a lista em "form_exibir_post.corpo.errors" -->
+                            {% for erro in form_exibir_post.corpo.errors %}
+                                <!-- Mostrando a variável erro -->
+                                {{ erro }}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <!-- Exibindo o Formulário caso não haja erro -->
+                        {{ form_exibir_post.corpo(class="form-control") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <!-- Exibindo o Botão Login -->
+            {{ form_exibir_post.botao_submit_criarpost(class="btn btn-primary mt-2") }}
+        </form>
+    </div>
+</div>
+{% endif %}
+
+
+<!-- Modal -->
+<!-- Ver no Link: https://getbootstrap.com/docs/5.0/components/modal/ -->
+<div class="modal fade" id="ExcluirPost" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Exclusão de Post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Tem certeza que quer realmente excluir esse Post? <br> Atenção: Essa operação não poderá ser desfeita!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <!-- Incluindo um Formulário Vazio (tag form) para criar um Link para o Botão que executa uma Ação -->
+          <!-- Obs.1: Passando o method="POST" para poder enviar dados -->
+          <!-- Obs.2: Passando o action="{{ url_for('excluir_post', post_id = post.id) }}" para fazer o Link -->
+          <form method="POST" action="{{ url_for('excluir_post', post_id = post.id) }}">
+            <!-- Alterando de type="button" para type="submit" para enviar o Formulário-->
+            <!-- Obs.: Devido a não ter sido criado um Formulário para ele em forms.py -->
+            <button type="submit" class="btn btn-danger">Excluir Post</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+{% endblock %}

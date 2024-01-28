@@ -1,0 +1,100 @@
+<!-- Criando uma extensão do arquivo "perfil.html" -->
+{% extends "perfil.html" %}
+
+
+
+<!-- Criando o Bloco para Editar Perfil -->
+<!-- Este Bloco foi Copiado para da Página "perfil.html" -->
+<!-- E aqui deverão ser efetuadas as operações de Editar Perfil -->
+<!-- Criar um Novo Formulário "" no "forms.py" -->
+{% block form_editar_perfil %}
+    <div class = "container">
+        <div class = "col w-100 mx-auto">
+            <!-- O enctype="multipart/form-data" é obrigatório na tag "form" para reconhecer a Estensão do Arquivo no Upload -->
+            <form method = "POST" action = "" class = "border p-3 mt-2" enctype="multipart/form-data">
+                <!-- Incluindo o Token de Segurançado Formulário. Importante: logo abaixo das tags <form> -->
+                <!-- Obs.: A instância "form_criarconta" está linkada na Função "form_editar_perfil()" em "routes.py" -->
+                {{ form_editar_perfil.csrf_token }}
+                <legend>Editar Perfil</legend>
+                <fieldset>
+                    <!-- Campo de USERNAME -->
+                    <!-- Obs.1: A instância "form_editar_perfil" está linkada na Função "form_editar_perfil()" em "routes.py" -->
+                    <!-- Obs.2: Nomeando os rótulos ".label" nos campos conforme foram criados no "form_editar_perfil" -->
+                    <div class = "form-group">
+                        {{ form_editar_perfil.username.label(class="form-control-label") }}
+                            <!-- Verificando se existem errors neste campo -->
+                        {% if form_editar_perfil.username.errors %}
+                            <!-- Se existe erro, exibir usando a classe "is-invalid" que aparecerá na class="invalid-feedback" -->
+                            {{ form_editar_perfil.username(class="form-control is-invalid") }}
+                            <!-- Criando uma <div class = "invalid-feedback"> do BootStrap para o Erro aparecer bem visual -->
+                            <div class = "invalid-feedback">
+                                <!-- Percorrendo a lista em "form_editar_perfil.username.errors" -->
+                                {% for erro in form_editar_perfil.username.errors %}
+                                    <!-- Mostrando a variável erro -->
+                                    {{ erro }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <!-- Exibindo o Formulário caso não haja erro -->
+                            {{ form_editar_perfil.username(class="form-control") }}
+                        {% endif %}
+                    </div>
+                    <!-- Campo de EMAIL -->
+                    <!-- Obs.1: A instância "form_editar_perfil" está linkada na Função "form_editar_perfil()" em "routes.py" -->
+                    <!-- Obs.2: Nomeando os rótulos ".label" nos campos conforme foram criados no "form_editar_perfil" -->
+                    <div class = "form-group">
+                        {{ form_editar_perfil.email.label(class="form-control-label") }}
+                        <!-- Verificando se existem errors neste campo -->
+                        {% if form_editar_perfil.email.errors %}
+                            <!-- Se existe erro, exibir usando a classe "is-invalid" que aparecerá na class="invalid-feedback" -->
+                            {{ form_editar_perfil.email(class="form-control is-invalid") }}
+                            <!-- Criando uma <div class = "invalid-feedback"> do BootStrap para o Erro aparecer bem visual -->
+                            <div class = "invalid-feedback">
+                                <!-- Percorrendo a lista em "form_editar_perfil.email.errors" -->
+                                {% for erro in form_editar_perfil.email.errors %}
+                                    <!-- Mostrando a variável erro -->
+                                    {{ erro }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <!-- Exibindo o Formulário caso não haja erro -->
+                            {{ form_editar_perfil.email(class="form-control") }}
+                        {% endif %}
+                    </div>
+                    <!-- Campo de FOTO DE PERFIL -->
+                    <!-- Incluindo a Foto de Perfil do Usuário  -->
+                    <div class = "form-group">
+                        <!-- Botão "Escolher arquivo" -->
+                        {{ form_editar_perfil.foto_perfil.label }}
+                        {{ form_editar_perfil.foto_perfil(class = "form-control-file mt-2") }}
+                        <!-- Verificando se existem errors neste campo -->
+                        {% if form_editar_perfil.foto_perfil.errors %}
+                            <!-- Percorrendo a Lista em "form_editar_perfil.foto_perfil.errors" -->
+                            {% for erro in form_editar_perfil.foto_perfil.errors %}
+                                <!-- Mostrando a variável erro -->
+                                <!-- Obs.: Formatando usando a tag "span" para dividir com Classe "text-danger" do BootStrap -->
+                                <span class = "text-danger">{{ erro }}</span><br>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <legend>Cursos</legend>
+                    <!-- Incluindo todos os Botões dos Cursos para seleção da Classe "FormEditarPerfil" do arquivo "forms.py" -->
+                    <!-- Percorrendo a variável "campo" na Lista "form_editar_perfil"  -->
+                    {% for campo in form_editar_perfil %}
+                        <!-- Verificando se "curso_" está dentro do Nome da Variável  -->
+                        {% if "curso_" in campo.name %}
+                            <!-- Exibindo para cada "curso_" existente as caixas e os campos dos cursos -->
+                            <div class = "form-group">
+                                {{ campo(class="form-check-input") }}
+                                {{ campo.label(class="form-control-label") }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </fieldset>
+                <!-- Exibindo o Botão Login -->
+                {{ form_editar_perfil.botao_submit_editarperfil(class="btn btn-primary mt-2") }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

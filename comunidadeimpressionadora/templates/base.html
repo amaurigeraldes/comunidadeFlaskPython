@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Comunidade Impressionadora</title>
+
+    <!-- Criando um link CSS do BootStrap versão 5.02 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- Criando um link CSS para o Conteúdo obtido e colado do Site: -->
+    <!-- https://bbbootstrap.com/snippets/bootstrap-sidebar-user-profile-62301382 -->
+    <!-- Obs.: O caminha da Pasta do Projeto no href="" deverá estar entre duplas chaves -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'main.css') }}">
+
+
+    <!-- Criando um Bloco para execução de Scripts Python dentro do <head> -->
+    {% block head %}
+    
+    {% endblock %}
+
+  </head>
+
+  <body>
+
+    <!-- Incluindo a barra de navegação em todas as páginas -->
+    {% include "navbar.html" %}
+
+
+
+    <!-- Incluindo Alertas (Flash) com Mensagens em qualquer uma das páginas -->
+    <div class = "container">
+      {% with mensagens = get_flashed_messages(with_categories=True) %}
+          {% if mensagens %}
+              <!-- Percorrendo a Lista "mensagens" e fazendo o UNPACKING para "categoria" e "mensagem" -->
+              {% for categoria, mensagem in mensagens %}
+                  <!-- Obs.: Personalizando o Alerta conforme Categoria utilizando as opções disponíveis no BootStrap -->
+                  <div class="alert {{ categoria }}"> 
+                      <!-- Exibindo a Mensagem de Alerta Personalizada -->
+                      {{ mensagem }} 
+                  </div>
+              {% endfor %}
+          {% endif %}
+      {% endwith %}
+    </div>
+
+
+
+
+    <!-- Criando um Bloco para execução de Scripts Python dentro do <body> -->
+    {% block body %}
+    
+    {% endblock %}
+
+    
+    <!-- Criando um link JS do BootStrap versão 5.02 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+
+  </body>
+</html>

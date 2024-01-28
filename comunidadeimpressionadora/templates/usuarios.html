@@ -1,0 +1,70 @@
+<!-- Criando uma extensão do arquivo "base.html" -->
+{% extends "base.html" %}
+
+
+<!-- Criando o conteúdo da página usuários do site -->
+{% block body %}
+    <div class = "container">
+        <legend>Usuários</legend>
+        
+        <!-- Percorrendo a lista_usuarios e pegando cada usuario -->
+        <!-- Obs.: A instância "lista_usuarios" está linkada na Função "usuarios()" em "routes.py" -->
+        {% for usuario in lista_usuarios %}
+            
+            <!-- Conteúdo HTML obtido e colado do Site: https://bbbootstrap.com/snippets/bootstrap-sidebar-user-profile-62301382 -->
+            <div class="container mt-5 d-flex justify-content-center">
+                <div class="card p-3">
+                    <div class="d-flex align-items-center">
+                        <!-- Inf. a variável "{{ foto_perfil }}" da Função "perfil" passada para o HTML no arquivo "routes.py" -->
+                        <div class="image pe-2">
+                            <img src="{{ url_for("static", filename = "fotos_perfil/{}".format(usuario.foto_perfil)) }}" class="rounded" width="200">
+                        </div>
+                        <div class="ml-3 w-100">
+                            <h4 class="mb-0 mt-0">{{ usuario.username }}</h4><span>{{ usuario.email }}</span>
+                            <div class="p-2 mt-2 bg-primary d-flex justify-content-between rounded text-white stats">
+                                <!-- Verificando se  na Tabela "Usuario", no campo "cursos", parâmetro default = "Não Informado" -->
+                                {% if "Não Informado" in usuario.cursos %}
+                                    <!-- Exibindo o Valor 0 -->
+                                    <div class="d-flex flex-column">
+                                        <span class="articles">Cursos</span>
+                                        <span class="number1">0</span>
+                                    </div>
+                                <!-- Caso contrário -->
+                                {% else %}
+                                    <!-- Exibindo o Valor Calculado -->
+                                    <div class="d-flex flex-column">
+                                        <span class="articles">Cursos</span>
+                                        <!-- Atualizando a Quantidade de Cursos do Usuário em uma variável Python -->
+                                        <!-- passando entre duplas chaves "usuario.cursos.count(";") + 1" -->
+                                        <span class="number1">{{ usuario.cursos.count(";") + 1 }}</span>
+                                    </div>
+                                {% endif %}
+                                <div class="d-flex flex-column">
+                                    <span class="rating">Posts</span>
+                                    <!-- Inserindo o Método de Contagem de Posts do Usuário -->
+                                    <span class="number3"> {{ usuario.contar_posts() }} </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mostrando os Botões do Cursos do Usuário na Página Perfil do Usuário -->
+            <div class="row justify-content-center">
+                <div class="col col-4" style = "text-align: center">
+                    <legend>Cursos</legend><br>
+                    <!-- Percorrendo a String "usuario.cursos", transformando numa Lista de Cursos usando ".split(";")"  -->
+                    {% for curso in usuario.cursos.split(";") %}
+                        <!-- Exibindo os Cursos selecionados pelo Usuário  -->
+                        <!-- Parãmetro "disabled" para esmaecimento em Components/Buttons do BootStrap -->
+                        <button type="button" class="btn btn-success mt-2 disabled"> {{ curso}} </button>
+                    {% endfor  %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class = "row mt-5">
+
+    </div>
+{% endblock %}

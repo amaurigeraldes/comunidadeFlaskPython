@@ -1,0 +1,48 @@
+<!-- Criando uma extensão do arquivo "base.html" -->
+{% extends "base.html" %}
+
+
+<!-- Criando o conteúdo da página de inicio do site -->
+{% block body %}
+<div class = "container mt-3">
+    <h1 style="color: orange;">Comunidade Impressionadora - Hashtag Treinamentos</h1>
+    <h2>Alunos e experts em um só lugar </h2>
+    <hr>
+    {% for post in posts %}
+        <div class="row border mt-4 p-3 meupost">
+            <!-- Separando 3 Colunas para a Imagem -->
+            <div class="col col-3">
+                <div class="image pe-2">
+                    <!-- Passando o Campo foto_perfil do autor daquele post "post.autor.foto_perfil" -->
+                    <img src="{{ url_for("static", filename = "fotos_perfil/{}".format(post.autor.foto_perfil)) }}" class="rounded" width="240">
+                    <!-- Mostrando o Nome do Usuário -->
+                    <strong>{{ post.autor.username }}</strong>
+                    <!-- Mostrando os Botões do Cursos do Usuário na Página Perfil do Usuário -->
+                    <div class="row justify-content-center">
+                        <div class="col" style = "text-align: center">
+                            <!-- Percorre a String "post.autor.cursos", transf. numa Lista de Cursos usando ".split(";")"  -->
+                            {% for curso in post.autor.cursos.split(";") %}
+                                <!-- Exibindo os Cursos selecionados pelo Usuário  -->
+                                <!-- Parãmetro "disabled" para esmaecimento em Components/Buttons do BootStrap -->
+                                <button type="button" class="btn btn-success mt-2 disabled"> {{ curso}} </button>
+                            {% endfor  %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Separando 9 Colunas para o Texto -->
+            <div class="col col-9">
+                <!-- Transformando o Título na tag <h3> em um Link para abrir o Post selecionado -->
+                <!-- Obs.1: "exibir_post" é a função -->
+                <!-- Obs.2: "post_id" é a variável recebida pela função -->
+                <!-- Obs.3: "Post.id" é o parãmetro "id" da Classe "Post" no "models.py" -->
+                <!-- Obs.4: "style = "text-decoration: none"" para eliminar o sublinhado do Link -->
+                <a style = "text-decoration: none" href="{{ url_for("exibir_post", post_id = post.id) }}">
+                    <h3>{{ post.titulo }}</h3>
+                </a>
+                <p>{{ post.corpo }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

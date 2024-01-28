@@ -1,0 +1,65 @@
+<!-- Criando uma extensão do arquivo "base.html" -->
+{% extends "base.html" %}
+
+
+<!-- Criando o conteúdo da página contatos do site -->
+{% block body %}
+    <div class = "container">
+        <div class = "col w-100 mx-auto">
+            <form method = "POST" action = "" class = "border p-3 mt-2">
+                <!-- Incluindo o Token de Segurançado Formulário. Importante: logo abaixo das tags <form> -->
+                <!-- Obs.: A instância "form_criarconta" está linkada na Função "form_criar_post()" em "routes.py" -->
+                {{ form_criar_post.csrf_token }}
+                <legend>Criar Post</legend>
+                <fieldset>
+                    <!-- Campo de titulo -->
+                    <!-- Obs.1: A instância "form_criar_post" está linkada na Função "form_criar_post()" em "routes.py" -->
+                    <!-- Obs.2: Nomeando os rótulos ".label" nos campos conforme foram criados no "form_criar_post" -->
+                    <div class = "form-group">
+                        {{ form_criar_post.titulo.label(class="form-control-label") }}
+                            <!-- Verificando se existem errors neste campo -->
+                        {% if form_criar_post.titulo.errors %}
+                            <!-- Se existe erro, exibir usando a classe "is-invalid" que aparecerá na class="invalid-feedback" -->
+                            {{ form_criar_post.titulo(class="form-control is-invalid") }}
+                            <!-- Criando uma <div class = "invalid-feedback"> do BootStrap para o Erro aparecer bem visual -->
+                            <div class = "invalid-feedback">
+                                <!-- Percorrendo a lista em "form_criar_post.titulo.errors" -->
+                                {% for erro in form_criar_post.titulo.errors %}
+                                    <!-- Mostrando a variável erro -->
+                                    {{ erro }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <!-- Exibindo o Formulário caso não haja erro -->
+                            {{ form_criar_post.titulo(class="form-control") }}
+                        {% endif %}
+                    </div>
+                    <!-- Campo de corpo -->
+                    <!-- Obs.1: A instância "form_criar_post" está linkada na Função "form_criar_post()" em "routes.py" -->
+                    <!-- Obs.2: Nomeando os rótulos ".label" nos campos conforme foram criados no "form_criar_post" -->
+                    <div class = "form-group">
+                        {{ form_criar_post.corpo.label(class="form-control-label") }}
+                            <!-- Verificando se existem errors neste campo -->
+                        {% if form_criar_post.corpo.errors %}
+                            <!-- Se existe erro, exibir usando a classe "is-invalid" que aparecerá na class="invalid-feedback" -->
+                            {{ form_criar_post.corpo(class="form-control is-invalid") }}
+                            <!-- Criando uma <div class = "invalid-feedback"> do BootStrap para o Erro aparecer bem visual -->
+                            <div class = "invalid-feedback">
+                                <!-- Percorrendo a lista em "form_criar_post.corpo.errors" -->
+                                {% for erro in form_criar_post.corpo.errors %}
+                                    <!-- Mostrando a variável erro -->
+                                    {{ erro }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <!-- Exibindo o Formulário caso não haja erro -->
+                            {{ form_criar_post.corpo(class="form-control") }}
+                        {% endif %}
+                    </div>
+                </fieldset>
+                <!-- Exibindo o Botão Login -->
+                {{ form_criar_post.botao_submit_criarpost(class="btn btn-primary mt-2") }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

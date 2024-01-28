@@ -1,0 +1,163 @@
+<!-- Criando uma extensão do arquivo "base.html" -->
+{% extends "base.html" %}
+
+
+<!-- Criando o conteúdo da página contatos do site -->
+{% block body %}
+<div class = "container">
+    <legend> Já tem cadastro? Faça o seu Login!</legend>
+    <legend> Ainda não? Então crie agora mesmo a sua Conta! É rápido e fácil...</legend>
+    <hr>
+    <!-- Criando uma separação na mesma Linha em duas Colunas para Login e Criar Conta -->
+    <div class = "row">
+        <div class = "col">
+            <!-- FORMULÁRIO PARA FAZER LOGIN  -->
+            <form method = "POST" action = "" class = "border p-4 mt-2">
+                <!-- Incluindo o Token de Segurançado Formulário. Importante: logo abaixo das tags <form> -->
+                <!-- Obs.: A instância "form_criarconta" está linkada na Função "login()" em "routes.py" -->
+                {{ form_login.csrf_token }}
+                <legend>Login</legend>
+                <fieldset>
+                    <!-- Obs.1: A instância "form_login" está linkada na Função "login()" em "routes.py" -->
+                    <!-- Obs.2: Nomeando e colocando os rótulos ".label" nos campos conforme foram criados no "FormLogin" -->
+                    <div class = "form-group">
+                        {{ form_login.email.label(class="form-control-label") }}
+                         <!-- Verificando se existem errors neste campo -->
+                        {% if form_login.email.errors %}
+                            <!-- Se existe erro, exibir usando a classe "is-invalid" que aparecerá na class="invalid-feedback" -->
+                            {{ form_login.email(class="form-control is-invalid") }}
+                            <!-- Criando uma <div class = "invalid-feedback"> do BootStrap para o Erro aparecer bem visual -->
+                            <div class = "invalid-feedback">
+                                <!-- Percorrendo a lista em "form_login.email.errors" -->
+                                {% for erro in form_login.email.errors %}
+                                    <!-- Mostrando a variável erro -->
+                                    {{ erro }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <!-- Exibindo o Formulário caso não haja erro -->
+                            {{ form_login.email(class="form-control") }}
+                        {% endif %}
+                    </div>
+                    <div class = "form-group">
+                        {{ form_login.senha.label(class="form-control-label") }}
+                         <!-- Verificando se existem errors neste campo -->
+                         {% if form_login.senha.errors %}
+                         <!-- Se existe erro, exibir usando a classe "is-invalid" que aparecerá na class="invalid-feedback" -->
+                         {{ form_login.senha(class="form-control is-invalid") }}
+                         <!-- Criando uma <div class = "invalid-feedback"> do BootStrap para o Erro aparecer bem visual -->
+                         <div class = "invalid-feedback">
+                             <!-- Percorrendo a lista em "form_login.senha.errors" -->
+                             {% for erro in form_login.senha.errors %}
+                                 <!-- Mostrando a variável erro -->
+                                 {{ erro }}
+                             {% endfor %}
+                         </div>
+                     {% else %}
+                         <!-- Exibindo o Formulário caso não haja erro -->
+                         {{ form_login.senha(class="form-control") }}
+                     {% endif %}                        
+                    </div>
+                    <div class = "form-group">
+                        {{ form_login.lembrar_dados.label(class="form-control-label") }}
+                        {{ form_login.lembrar_dados(class="form-check-input") }}
+                    </div>
+                </fieldset>
+                <!-- Exibindo o Botão Login -->
+                {{ form_login.botao_submit_login(class="btn btn-primary mt-2") }}
+            </form>
+        </div>
+        <div class = "col">
+            <!-- FORMULÁRIO PARA CRIAR A CONTA  -->
+            <form method = "POST" action = "" class = "border p-4 mt-2">
+                 <!-- Incluindo o Token de Segurançado Formulário. Importante: logo abaixo das tags <form> -->
+                <!-- Obs.: A instância "form_criarconta" está linkada na Função "login()" em "main.py" -->
+                {{ form_criarconta.csrf_token }}
+                <legend>Criar Conta</legend>
+                <fieldset>
+                    <!-- Obs.1: A instância "form_criarconta" está linkada na Função "login()" em "main.py" -->
+                    <!-- Obs.2: Nomeando e colocando os rótulos ".label" nos campos conforme foram criados no "FormCriarConta" -->
+                    <div class = "form-group">
+                        {{ form_criarconta.username.label(class="form-control-label") }}
+                         <!-- Verificando se existem errors neste campo -->
+                         {% if form_criarconta.username.errors %}
+                         <!-- Se existe erro, exibir usando a classe "is-invalid" que aparecerá na class="invalid-feedback" -->
+                         {{ form_criarconta.username(class="form-control is-invalid") }}
+                         <!-- Criando uma <div class = "invalid-feedback"> do BootStrap para o Erro aparecer bem visual -->
+                         <div class = "invalid-feedback">
+                             <!-- Percorrendo a lista em "form_criarconta.username.errors" -->
+                             {% for erro in form_criarconta.username.errors %}
+                                 <!-- Mostrando a variável erro -->
+                                 {{ erro }}
+                             {% endfor %}
+                         </div>
+                     {% else %}
+                         <!-- Exibindo o Formulário caso não haja erro -->
+                         {{ form_criarconta.username(class="form-control") }}
+                     {% endif %}                        
+                    </div>
+                    <div class = "form-group">
+                        {{ form_criarconta.email.label(class="form-control-label") }}
+                         <!-- Verificando se existem errors neste campo -->
+                         {% if form_criarconta.email.errors %}
+                         <!-- Se existe erro, exibir usando a classe "is-invalid" que aparecerá na class="invalid-feedback" -->
+                         {{ form_criarconta.email(class="form-control is-invalid") }}
+                         <!-- Criando uma <div class = "invalid-feedback"> do BootStrap para o Erro aparecer bem visual -->
+                         <div class = "invalid-feedback">
+                             <!-- Percorrendo a lista em "form_criarconta.email.errors" -->
+                             {% for erro in form_criarconta.email.errors %}
+                                 <!-- Mostrando a variável erro -->
+                                 {{ erro }}
+                             {% endfor %}
+                         </div>
+                     {% else %}
+                         <!-- Exibindo o Formulário caso não haja erro -->
+                         {{ form_criarconta.email(class="form-control") }}
+                     {% endif %}                        
+                    </div>
+                    <div class = "form-group">
+                        {{ form_criarconta.senha.label(class="form-control-label") }}
+                         <!-- Verificando se existem errors neste campo -->
+                         {% if form_criarconta.senha.errors %}
+                         <!-- Se existe erro, exibir usando a classe "is-invalid" que aparecerá na class="invalid-feedback" -->
+                         {{ form_criarconta.senha(class="form-control is-invalid") }}
+                         <!-- Criando uma <div class = "invalid-feedback"> do BootStrap para o Erro aparecer bem visual -->
+                         <div class = "invalid-feedback">
+                             <!-- Percorrendo a lista em "form_criarconta.senha.errors" -->
+                             {% for erro in form_criarconta.senha.errors %}
+                                 <!-- Mostrando a variável erro -->
+                                 {{ erro }}
+                             {% endfor %}
+                         </div>
+                     {% else %}
+                         <!-- Exibindo o Formulário caso não haja erro -->
+                         {{ form_criarconta.senha(class="form-control") }}
+                     {% endif %}                        
+                    </div>
+                    <div class = "form-group">
+                        {{ form_criarconta.confirmacao_senha.label(class="form-control-label") }}
+                         <!-- Verificando se existem errors neste campo -->
+                         {% if form_criarconta.confirmacao_senha.errors %}
+                         <!-- Se existe erro, exibir usando a classe "is-invalid" que aparecerá na class="invalid-feedback" -->
+                         {{ form_criarconta.confirmacao_senha(class="form-control is-invalid") }}
+                         <!-- Criando uma <div class = "invalid-feedback"> do BootStrap para o Erro aparecer bem visual -->
+                         <div class = "invalid-feedback">
+                             <!-- Percorrendo a lista em "form_criarconta.confirmacao_senha.errors" -->
+                             {% for erro in form_criarconta.confirmacao_senha.errors %}
+                                 <!-- Mostrando a variável erro -->
+                                 {{ erro }}
+                             {% endfor %}
+                         </div>
+                     {% else %}
+                         <!-- Exibindo o Formulário caso não haja erro -->
+                         {{ form_criarconta.confirmacao_senha(class="form-control") }}
+                     {% endif %}                        
+                    </div>                    
+                </fieldset>
+                <!-- Exibindo o Botão Criar Conta -->
+                {{ form_criarconta.botao_submit_criarconta(class="btn btn-primary mt-2") }}
+            </form> 
+        </div>
+    </div>
+</div>
+{% endblock %}
