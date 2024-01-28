@@ -34,6 +34,7 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "af2aa2309390e6e9c40952dccb893398"
 
 
+# ===================================================================================================
 # Configurando o app para um caminho na URL do "railway.app" para o Banco de Dados do Servidor
 # Se existe esta variável de ambiente
 if os.getenv("DATABASE_URL"):
@@ -43,6 +44,7 @@ if os.getenv("DATABASE_URL"):
 else:
     # Configurando o app para um caminho Local para o Banco de Dados "comunidade_impressionadora.db"
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///comunidade_impressionadora.db" 
+# ===================================================================================================    
 
 
 # Criando a instância do Banco de Dados
@@ -64,28 +66,33 @@ login_manager.login_message = "Favor efetuar Login ou Criar Conta para ter acess
 # Ver as Categorias de Alertas em https://getbootstrap.com/docs/5.0/components/alerts/
 login_manager.login_message_category = "alert-info"
 
-# Importando "models.py"
-# Obs.: Para carregar as Tabelas que precisarão estar contidas no Banco de Dados
-from comunidadeimpressionadora import models
-# Criando uma engine para avaliar o Banco de Dados
-# Obs.: A variável "engine" recebe o Link do Banco de Dados
-engine = sqlalchemy.create_engine(os.getenv("DATABASE_URL"))
-# Verificando dentro desta engine (Banco de Dados) se ela tem a Tabela de Usuários
-inspector = sqlalchemy.inspect(engine)
-# Se dentro do inspector, ou seja, da engine não tem a Tabela usuario
-# Obs.: Mesmo que o nome da Classe seja Usuario, utilizar em letras minúsculas
-if not inspector.has_table("usuario"):
-    # Criando o contexto para não gerar a mensagem de erro
-    with app.app_context():
-        # Caso tenha criado um Banco de Dados que não tenha a tabela usuario
-        # Obs.: Se for criar e já existir gerará um Erro
-        database.drop_all()
-        # Criando o Banco de Dados
-        database.create_all()
-        print("Base de Dados criada")
-# Caso contrário
-else:
-    print("Base de Dados já existente")
+
+# ===================================================================================================
+# Se existe esta variável de ambiente
+if os.getenv("DATABASE_URL"):
+    # # Importando "models.py"
+    # # Obs.: Para carregar as Tabelas que precisarão estar contidas no Banco de Dados
+    from comunidadeimpressionadora import models
+    # Criando uma engine para avaliar o Banco de Dados
+    # Obs.: A variável "engine" recebe o Link do Banco de Dados
+    engine = sqlalchemy.create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
+    # Verificando dentro desta engine (Banco de Dados) se ela tem a Tabela de Usuários
+    inspector = sqlalchemy.inspect(engine)
+    # Se dentro do inspector, ou seja, da engine não tem a Tabela usuario
+    # Obs.: Mesmo que o nome da Classe seja Usuario, utilizar em letras minúsculas
+    if not inspector.has_table("usuario"):
+        # Criando o contexto para não gerar a mensagem de erro
+        with app.app_context():
+            # Caso tenha criado um Banco de Dados que não tenha a tabela usuario
+            # Obs.: Se for criar e já existir gerará um Erro
+            database.drop_all()
+            # Criando o Banco de Dados
+            database.create_all()
+            print("Base de Dados criada")
+    # Caso contrário
+    else:
+        print("Base de Dados já existente")
+# ===================================================================================================
 
 
 # Importando "routes.py" para colocar os Links no ar
