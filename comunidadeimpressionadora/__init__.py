@@ -68,9 +68,6 @@ login_manager.login_message_category = "alert-info"
 
 
 # ===================================================================================================
-# Se existe esta variável de ambiente
-# if os.getenv("DATABASE_URL"):
-
 # Importando "models.py"
 # Obs.: Para carregar as Tabelas que precisarão estar contidas no Banco de Dados
 from comunidadeimpressionadora import models
