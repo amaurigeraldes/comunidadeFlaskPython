@@ -20,6 +20,8 @@ from flask_bcrypt import Bcrypt
 # Importando a biblioteca flask_login
 from flask_login import LoginManager
 
+# Importando a biblioteca os
+import os
 
 # Criando uma instância da Flask classe
 app = Flask(__name__)
@@ -28,8 +30,17 @@ app = Flask(__name__)
 # Obs.: Gerando token no Terminal Normal (Não do Ambiente Virtual) com comandos Python: "import secrets" e "secrets.token_hex(16)"
 app.config["SECRET_KEY"] = "af2aa2309390e6e9c40952dccb893398"
 
-# Configurando o app para um caminho Local para o Banco de Dados "comunidade_impressionadora.db"
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///comunidade_impressionadora.db"
+
+# Configurando o app para um caminho na URL do "railway.app" para o Banco de Dados do Servidor
+# Se existe esta variável de ambiente
+if os.getenv("DATABASE_URL"):
+    # Utilizar o Valor desta Variável de Ambiente
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+# Caso contrário
+else:
+    # Configurando o app para um caminho Local para o Banco de Dados "comunidade_impressionadora.db"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///comunidade_impressionadora.db" 
+
 
 # Criando a instância do Banco de Dados
 # Obs.1: O SQLAlchemy permite a criação da estrutura do Banco de Dados através da criação das Classes no arquivo "forms.py";
