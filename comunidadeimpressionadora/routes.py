@@ -134,7 +134,9 @@ def login():
     # Obs.2: Se os Formulários estivessem em páginas diferentes não seria necessária a validação do botão
     if form_criarconta.validate_on_submit() and "botao_submit_criarconta" in request.form:
         # Transformando a senha informada pelo usuário em uma senha criptografada
-        senha_crypt = bcrypt.generate_password_hash(form_criarconta.senha.data)
+        # Obs.1: Usando "decode("utf-8")" para fazer o Decode para armazenar no Banco de Dados
+        # Obs.2: Gerenciando a infraestrutura de Encoding Padrão do PostgreSQL para ele manter e armazenar a Criptografia
+        senha_crypt = bcrypt.generate_password_hash(form_criarconta.senha.data).decode("utf-8")
         # Criando o Usuário no Banco de Dados
         # A variável usuário é uma instância da Classe Usuario
         usuario = Usuario(username = form_criarconta.username.data,
