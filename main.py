@@ -7,4 +7,4 @@ from comunidadeimpressionadora import app
 # Executando a página somente se "__name__" estiver dentro de "main.py"
 # Obs.: Utilizando "debug = True" para que as edições nos Scripts sejam atualizadas no site durante o desenvolvimento
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(debug = False)
