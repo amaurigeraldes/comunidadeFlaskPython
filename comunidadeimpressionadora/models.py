@@ -9,6 +9,9 @@ from comunidadeimpressionadora import database, login_manager
 # Importando a biblioteca datetime
 from datetime import datetime
 
+# Importando a biblioteca pytz
+import pytz
+
 # Importando a biblioteca UserMixin 
 # É um parâmetro que será passado para a Classe Usuario e que atribuirá a essa Classe todas as características necessárias que o "login_manager" precisa para controlar o Login e para manter o Login conectado quando o usuário sai do Site
 from flask_login import UserMixin
@@ -52,7 +55,10 @@ class Usuario(database.Model, UserMixin):
         return len(self.posts)
 
 
-
+# Criando uma Função para fazer ajuste do Fuso Horário
+def get_sp_datetime():
+    saopaulo_tz = pytz.timezone('America/Sao_Paulo')
+    return datetime.now(saopaulo_tz)
 
 
 # Construindo a Tabela "Post" no Banco de Dados
@@ -68,7 +74,7 @@ class Post(database.Model):
     id = database.Column(database.Integer, primary_key = True)
     titulo = database.Column(database.String, nullable = False)
     corpo = database.Column(database.Text, nullable = False)
-    data_criacao = database.Column(database.DateTime, nullable = False, default = datetime.now)
+    data_criacao = database.Column(database.DateTime, nullable = False, default = get_sp_datetime)
     # Criando a Coluna para o Relacionando com o Usuário que criou o Post
     # Obs.1: O parâmetro ForeignKey é quem cria a relação entre a Class Post e a Class Usuario
     # Obs.2: O parâmetro "database.ForeignKey("usuario.id")" Chave Extrangeira é posicional e não poderá ser o último parâmetro
