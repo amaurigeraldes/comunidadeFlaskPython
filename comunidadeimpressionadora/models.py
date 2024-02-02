@@ -68,7 +68,7 @@ class Post(database.Model):
     id = database.Column(database.Integer, primary_key = True)
     titulo = database.Column(database.String, nullable = False)
     corpo = database.Column(database.Text, nullable = False)
-    data_criacao = database.Column(database.DateTime, nullable = False, default = datetime.now)
+    data_criacao = database.Column(database.DateTime, nullable = False, default = datetime.now())
     # Criando a Coluna para o Relacionando com o Usuário que criou o Post
     # Obs.1: O parâmetro ForeignKey é quem cria a relação entre a Class Post e a Class Usuario
     # Obs.2: O parâmetro "database.ForeignKey("usuario.id")" Chave Extrangeira é posicional e não poderá ser o último parâmetro
