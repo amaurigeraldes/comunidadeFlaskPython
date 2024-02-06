@@ -7,7 +7,7 @@
 from comunidadeimpressionadora import database, login_manager
 
 # Importando a biblioteca datetime
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # Importando a biblioteca pytz
 import pytz
@@ -56,9 +56,13 @@ class Usuario(database.Model, UserMixin):
 
 
 # Criando uma Função para fazer ajuste do Fuso Horário
+# def get_sp_datetime():
+#     saopaulo_tz = pytz.timezone('America/Sao_Paulo')
+#     return datetime.now(saopaulo_tz)
 def get_sp_datetime():
-    saopaulo_tz = pytz.timezone('America/Sao_Paulo')
-    return datetime.now(saopaulo_tz)
+    data_hora_atual = datetime.utcnow()
+    return data_hora_atual - timedelta(hours = 3)
+
 
 
 # Construindo a Tabela "Post" no Banco de Dados
